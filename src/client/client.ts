@@ -1,35 +1,25 @@
 import {
+  A2AError,
   AgentCard,
-  AgentCapabilities,
-  JSONRPCRequest,
-  JSONRPCResponse,
-  JSONRPCSuccessResponse,
+  CancelTaskResponse,
+  GetTaskPushNotificationConfigResponse,
+  GetTaskResponse,
   JSONRPCError,
   JSONRPCErrorResponse,
+  JSONRPCRequest,
+  JSONRPCResponse,
   Message,
-  Task,
-  TaskStatusUpdateEvent,
-  TaskArtifactUpdateEvent,
   MessageSendParams,
   SendMessageResponse,
   SendStreamingMessageResponse,
   SendStreamingMessageSuccessResponse,
-  TaskQueryParams,
-  GetTaskResponse,
-  GetTaskSuccessResponse,
-  TaskIdParams,
-  CancelTaskResponse,
-  CancelTaskSuccessResponse,
-  TaskPushNotificationConfig, // Renamed from PushNotificationConfigParams for direct schema alignment
-  SetTaskPushNotificationConfigRequest,
   SetTaskPushNotificationConfigResponse,
-  SetTaskPushNotificationConfigSuccessResponse,
-  GetTaskPushNotificationConfigRequest,
-  GetTaskPushNotificationConfigResponse,
-  GetTaskPushNotificationConfigSuccessResponse,
-  TaskResubscriptionRequest,
-  A2AError,
-  SendMessageSuccessResponse
+  Task,
+  TaskArtifactUpdateEvent,
+  TaskIdParams,
+  TaskPushNotificationConfig, // Renamed from PushNotificationConfigParams for direct schema alignment
+  TaskQueryParams,
+  TaskStatusUpdateEvent
 } from '../types.js'; // Assuming schema.ts is in the same directory or appropriately pathed
 import { AuthenticationHandler, HttpHeaders } from './auth-handler.js';
 
@@ -435,9 +425,10 @@ export class A2AClient {
         }
 
         buffer += value; // Append new chunk to buffer
-        let lineEndIndex;
+        let lineEndIndex: number;
         // Process all complete lines in the buffer
-        while ((lineEndIndex = buffer.indexOf('\n')) >= 0) {
+        lineEndIndex = buffer.indexOf('\n');
+        while (lineEndIndex >= 0) {
           const line = buffer.substring(0, lineEndIndex).trim(); // Get and trim the line
           buffer = buffer.substring(lineEndIndex + 1); // Remove processed line from buffer
 
@@ -456,6 +447,7 @@ export class A2AClient {
             // The A2A spec primarily focuses on the 'data' field for JSON-RPC payloads.
             // For now, we don't specifically handle these other SSE fields unless required by spec.
           }
+          lineEndIndex = buffer.indexOf('\n');
         }
       }
     } catch (error: any) {

@@ -51,7 +51,8 @@
     "coverage": "c8 npm run test",
     "generate": "curl https://raw.githubusercontent.com/google-a2a/A2A/refs/heads/main/specification/json/a2a.json > spec.json && node scripts/generateTypes.js && rm spec.json",
     "sample:cli": "tsx src/samples/cli.ts",
-    "sample:movie-agent": "tsx src/samples/agents/movie-agent/index.ts"
+    "sample:movie-agent": "tsx src/samples/agents/movie-agent/index.ts",
+    "prepare": "npm run build"
   },
   "dependencies": {
     "@types/cors": "^2.8.17",
