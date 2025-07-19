@@ -71,7 +71,12 @@ export class A2AClient {
       if (!agentCard.url) {
         throw new Error("Fetched Agent Card does not contain a valid 'url' for the service endpoint.");
       }
-      this.serviceEndpointUrl = agentCard.url; // Cache the service endpoint URL from the agent card
+      if (!agentCard.url.includes("localhost")) {
+        this.serviceEndpointUrl = agentCard.url; // Cache the service endpoint URL from the agent card
+      } else {
+        console.warn("Agent Card URL contains 'localhost'. Using it as the service endpoint URL may not be appropriate for production use.");
+        this.serviceEndpointUrl = this.agentBaseUrl; // Fallback to the base URL if localhost is detected
+      }
       return agentCard;
     } catch (error) {
       console.error("Error fetching or parsing Agent Card:");
