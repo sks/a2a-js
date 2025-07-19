@@ -121,7 +121,7 @@ export class A2AClient {
     const url = new URL( agentUrl );
     return url.pathname === "/"
       ? `${agentUrl}/.well-known/agent.json`
-      : `${agentUrl}/agent.json`;
+      : `${agentUrl}/.well-known/agent.json`;
   }
 
   /**
