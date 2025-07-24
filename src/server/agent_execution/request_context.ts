@@ -8,7 +8,7 @@ export class RequestContext {
     public readonly task?: Task;
     public readonly referenceTasks?: Task[];
     public readonly taskId: string;
-    public readonly metadata?: {
+    public metadata: {
         [k: string]: unknown;
     };
     public readonly contextId: string;
@@ -28,6 +28,6 @@ export class RequestContext {
         this.contextId = contextId;
         this.task = task;
         this.referenceTasks = referenceTasks;
-        this.metadata = metadata;
+        this.metadata = metadata || {};
     }
 }

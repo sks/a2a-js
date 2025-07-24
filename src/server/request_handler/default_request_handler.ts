@@ -1,11 +1,10 @@
 import { v4 as uuidv4 } from 'uuid'; // For generating unique IDs
 
-import { Message, AgentCard, PushNotificationConfig, Task, MessageSendParams, TaskState, TaskStatusUpdateEvent, TaskArtifactUpdateEvent, TaskQueryParams, TaskIdParams, TaskPushNotificationConfig } from "../../types.js";
+import { AgentCard, Message, MessageSendParams, PushNotificationConfig, Task, TaskArtifactUpdateEvent, TaskIdParams, TaskPushNotificationConfig, TaskQueryParams, TaskState, TaskStatusUpdateEvent } from "../../types.js";
 import { AgentExecutor } from "../agent_execution/agent_executor.js";
 import { RequestContext } from "../agent_execution/request_context.js";
 import { A2AError } from "../error.js";
-import { ExecutionEventBusManager, DefaultExecutionEventBusManager } from "../events/execution_event_bus_manager.js";
-import { ExecutionEventBus } from "../events/execution_event_bus.js";
+import { DefaultExecutionEventBusManager, ExecutionEventBusManager } from "../events/execution_event_bus_manager.js";
 import { ExecutionEventQueue } from "../events/execution_event_queue.js";
 import { ResultManager } from "../result_manager.js";
 import { TaskStore } from "../store.js";
@@ -236,6 +235,11 @@ export class DefaultRequestHandler implements A2ARequestHandler {
 
         const requestContext = await this._createRequestContext(incomingMessage, taskId, true);
         const finalMessageForAgent = requestContext.userMessage;
+        // append metadata if provided
+        if (params.metadata) {
+            requestContext.metadata = Object.assign(requestContext.metadata, params.metadata);
+        }
+        console.log("asd", {requestContext})
 
         const eventBus = this.eventBusManager.createOrGetByTaskId(taskId);
         const eventQueue = new ExecutionEventQueue(eventBus);
