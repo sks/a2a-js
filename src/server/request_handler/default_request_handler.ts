@@ -58,7 +58,7 @@ export class DefaultRequestHandler implements A2ARequestHandler {
                 throw A2AError.invalidRequest(`Task ${task.id} is in a terminal state (${task.status.state}) and cannot be modified.`)
             }
         }
-
+        console.log("sabith testing", {taskId, task, incomingMessage});
         if (incomingMessage.referenceTaskIds && incomingMessage.referenceTaskIds.length > 0) {
             referenceTasks = [];
             for (const refId of incomingMessage.referenceTaskIds) {
