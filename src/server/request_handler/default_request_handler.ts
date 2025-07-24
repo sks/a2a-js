@@ -239,7 +239,7 @@ export class DefaultRequestHandler implements A2ARequestHandler {
         if (params.metadata) {
             requestContext.metadata = Object.assign(requestContext.metadata, params.metadata);
         }
-        console.log("asd", {requestContext})
+        console.log("asd", {requestContext, params})
 
         const eventBus = this.eventBusManager.createOrGetByTaskId(taskId);
         const eventQueue = new ExecutionEventQueue(eventBus);
